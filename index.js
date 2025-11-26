@@ -10,27 +10,47 @@ const { Client } = pg;
 export const client = new Client({
   connectionString: process.env.SUPABASE_DB_URL,
   ssl: { rejectUnauthorized: false },
-  host: process.env.PGHOST,
-  user: process.env.PGUSER,
-  database: process.env.PGDATABASE,
-  port: process.env.PGPORT,
+   connectionTimeoutMillis: 5000, // 5 second timeout
+  idleTimeoutMillis: 30000,
+});
+
+await client.connect().catch(err => {
+  console.error('Database connection failed:', err);
 });
 
 
 async function connectDatabase() {
-    try {
-        await client.connect();
-        console.log("Connected to PostgreSQL!");
+  try {
+    if (!client._connected && !client._connecting) {
+      await client.connect();
+      console.log('Connected to database successfully');
+         // Test query
+         const result = await client.query("SELECT NOW()");
+         console.log(result.rows);
+    }
+    return client;
+  } catch (error) {
+    console.error('Database connection failed:', error);
+    throw error;
+  }
+}
 
-        // Test query
-        const result = await client.query("SELECT NOW()");
-        console.log(result.rows);
+// async function connectDatabase() {
+  
+//     try {
+//         await client.connect();
+        
+//         console.log("Connected to PostgreSQL!");
+
+//         // Test query
+//         const result = await client.query("SELECT NOW()");
+//         console.log(result.rows);
 
         
-    } catch (error) {
-        console.error("Error connecting:", error);
-    }
-}
+//     } catch (error) {
+//         console.error("Error connecting:", error);
+//     }
+// }
 
 connectDatabase();
 
