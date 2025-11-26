@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import postgres from 'postgres'
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -7,7 +8,7 @@ import pg from "pg";
 const { Client } = pg;
 
 export const client = new Client({
-  connectionString: process.env.SUPABASE_DB_URL,
+  connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false },
   family: 4, // force IPv4 so ENETUNREACH disappears
   connectionTimeoutMillis: 5000,
