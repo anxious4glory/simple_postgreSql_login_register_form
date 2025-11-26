@@ -6,10 +6,12 @@ dotenv.config();
 
 import pg from "pg";
 const { Client } = pg;
-const client = new Client({
+
+export const client = new Client({
+  connectionString: process.env.SUPABASE_DB_URL,
+  ssl: { rejectUnauthorized: false },
   host: process.env.PGHOST,
   user: process.env.PGUSER,
-  password: process.env.PGPASSWORD,
   database: process.env.PGDATABASE,
   port: process.env.PGPORT,
 });
