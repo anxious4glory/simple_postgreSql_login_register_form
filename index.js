@@ -2,6 +2,8 @@ import express from "express";
 import bodyParser from "body-parser";
 import postgres from 'postgres'
 import dotenv from "dotenv";
+import { createClient } from '@supabase/supabase-js';
+
 dotenv.config();
 
 import pg from "pg";
@@ -9,6 +11,10 @@ const { Client } = pg;
 
 export const client = new Client({
   connectionString: process.env.DATABASE_URL,
+  host: process.env.DATABASE_HOST,
+  port:process.env.DATABASE_PORT,
+  database:process.env.DATABASE_NAME,
+  user:process.env.DATABASE_USER,
   ssl: { rejectUnauthorized: false },
   family: 4, // force IPv4 so ENETUNREACH disappears
   connectionTimeoutMillis: 5000,
