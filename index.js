@@ -44,6 +44,14 @@ app.get("/", (req, res) => {
   res.render("home.ejs");
 });
 
+app.get("/register", (req, res) => {
+  res.render("register.ejs");  // render the registration form
+});
+
+app.get("/login", (req, res) => {
+  res.render("login.ejs");  // render the login form
+});
+
 // register
 app.post("/register", async (req, res) => {
   const { email, password } = req.body;
